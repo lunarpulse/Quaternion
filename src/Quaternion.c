@@ -17,7 +17,7 @@
  * @brief   A basic quaternion library written in C
  * @date    2019-11-28
  */
-#include "Quaternion.h"
+#include "../include/Quaternion.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
@@ -53,7 +53,7 @@ bool Quaternion_equal(Quaternion* q1, Quaternion* q2)
 
 void Quaternion_fprint(FILE* file, Quaternion* q)
 {
-    fprintf(file, "(%.3f, %.3f, %.3f, %.3f)",
+    fprintf(file, "(% 08.3f, % 08.3f, % 08.3f, % 08.3f)",
         q->w, q->v[0], q->v[1], q->v[2]);
 }
 
@@ -117,15 +117,15 @@ void Quaternion_fromEulerZYX(double eulerZYX[3], Quaternion* output)
     // Based on https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
     double cy = cos(eulerZYX[2] * 0.5);
     double sy = sin(eulerZYX[2] * 0.5);
-    double cr = cos(eulerZYX[0] * 0.5);
-    double sr = sin(eulerZYX[0] * 0.5);
     double cp = cos(eulerZYX[1] * 0.5);
     double sp = sin(eulerZYX[1] * 0.5);
+    double cr = cos(eulerZYX[0] * 0.5);
+    double sr = sin(eulerZYX[0] * 0.5);
 
-    output->w = cy * cr * cp + sy * sr * sp;
-    output->v[0] = cy * sr * cp - sy * cr * sp;
-    output->v[1] = cy * cr * sp + sy * sr * cp;
-    output->v[2] = sy * cr * cp - cy * sr * sp;
+    output->w = cr * cp * cy + sr * sp * sy;
+    output->v[0] = sr * cp * cy - cr * sp * sy;
+    output->v[1] = cr * sp * cy + sr * cp * sy;
+    output->v[2] = cr * cp * sy - sr * sp * cy;
 }
 
 void Quaternion_toEulerZYX(Quaternion* q, double output[3])
