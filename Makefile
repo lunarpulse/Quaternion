@@ -28,6 +28,9 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = example.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
+_OBJ_slerp = Quaternion_slerp.o
+OBJ_slerp = $(patsubst %,$(ODIR)/%,$(_OBJ_slerp))
+
 _TEST = TestQuaternion.o
 TEST = $(patsubst %,$(ODIR)/%,$(_TEST))
 
@@ -46,15 +49,20 @@ lib: lib$(NAME).so.$(VERSION)
 example: $(OBJ)
 	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) 
 
+slerp: $(OBJ_slerp)
+	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) 
+
 test: $(TEST)
 	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) && \
 	LD_LIBRARY_PATH=${LDIR}:$LD_LIBRARY_PATH ${BINDIR}/$@
 
-all: directories libs example test
+prep: directories libs
 
 libs: lib$(NAME).so
 
-exec: example
+exec: example slerp
+
+all: prep exec test
 
 .PHONY: clean directories
 
