@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := exec
 
 MAJOR := 0
 MINOR := 1
@@ -38,8 +38,8 @@ lib$(NAME).so.$(VERSION): ${ODIR}/$(NAME).o
 	$(CC) $^ -o ${LDIR}/$@ $(CFLAGS) $(LIBS) $(LDFLAGS) 
 
 lib$(NAME).so: lib$(NAME).so.$(VERSION)
-	ldconfig -n ${LDIR} && \
-	ln -s ./${build}/lib$(NAME).so.$(MAJOR) ${LDIR}/lib$(NAME).so
+	ldconfig -n -v ${LDIR} && \
+	ln -s .${build}/lib$(NAME).so.$(MAJOR) ${LDIR}/lib$(NAME).so
 
 lib: lib$(NAME).so.$(VERSION)
 
@@ -50,7 +50,11 @@ test: $(TEST)
 	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) && \
 	LD_LIBRARY_PATH=${LDIR}:$LD_LIBRARY_PATH ${BINDIR}/$@
 
-all: directories lib$(NAME).so example test
+all: directories libs example test
+
+libs: lib$(NAME).so
+
+exec: example
 
 .PHONY: clean directories
 
