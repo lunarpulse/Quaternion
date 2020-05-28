@@ -95,3 +95,8 @@ After the 10000 steps, our character is in position `(-199.899, 2.000, 0.000)`.
 In total, our character walked 314 meters (10000 * 0.0314), which equals half the circumference of the circle (`C/2`).
 Using the formula `D = C / PI`, the diameter of our circle was `D = 314*2 / PI ≈ 200`.
 This is the distance our character traveled along the X-axis (towards his initial left).
+
+## quaternion_slerp
+```bash
+make prep && make && time LD_LIBRARY_PATH=build/lib:D_LIBRARY_PATH ./build/bin/slerp -f slerp.txt -t 1000 -a "0.9238795, 0, 0.3826834, 0" -b "-0.3007058, 0, 0, 0.953717" > slerp.txt
+```

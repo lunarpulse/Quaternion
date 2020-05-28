@@ -50,7 +50,8 @@ example: $(OBJ)
 	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) 
 
 slerp: $(OBJ_slerp)
-	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) 
+	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) && \
+	LD_LIBRARY_PATH=build/lib:D_LIBRARY_PATH ./build/bin/slerp -f slerp.txt -t 1000 -a "0.9238795, 0, 0.3826834, 0" -b "-0.3007058, 0, 0, 0.953717" > slerp.txt
 
 test: $(TEST)
 	$(CC) $(CFLAGS) -o ${BINDIR}/$@ $^ $(LIBS) $(SHAREDLIBS) && \
@@ -81,3 +82,4 @@ clean:
 	rm -f $(INCDIR)/*~ $(SDIR)/*~  && \
 	rm -f $(ODIR)/*.o $(LDIR)/*.so.* ${BINDIR}/* && \
 	rm -r ${BINDIR} $(ODIR) $(LDIR) $(BDIR)
+	rm slerp.txt
